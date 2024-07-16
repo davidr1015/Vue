@@ -11,11 +11,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="hover">
-          <th>2</th>
-          <td>Hart Hagerty</td>
-          <td>Desktop Support Technician</td>
-          <td>Purple</td>
+        <tr v-for="(project, index) in projectStore.projectsList" :key="project.id" lass="hover">
+          <th>{{ index + 1 }}</th>
+          <td>{{ project.name }}</td>
+          <td>{{ project.tasks.length }}</td>
+          <td>
+            <progress class="progress progress-primary w-56" value="10" max="100"></progress>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,7 +29,7 @@
     subtitle="Dale un nombre único a tu proyecto"
     placeholder="Ingrese el nombre del proyecto"
     @close="modalOpen = false"
-    @value="onNewValue"
+    @value="projectStore.addProject"
   />
 
   <CustomModal :open="customModalOpen">
@@ -69,11 +71,18 @@ import CustomModal from '@/modules/common/components/CustomModal.vue';
 import AddCircle from '@/modules/common/icons/AddCircle.vue';
 import { ref } from 'vue';
 import ModalIcon from '@/modules/common/icons/ModalIcon.vue';
+import { useProjectsStore } from '../store/projects.store';
 
 const modalOpen = ref(false);
 const customModalOpen = ref(false);
 
+const projectStore =  useProjectsStore();
+
 const onNewValue = (projectName: string) => {
-  console.log({ projectName });
+  projectStore.projectsList.push({
+    id: '3',
+    name: projectName,
+    tasks: []
+  })
 };
 </script>
